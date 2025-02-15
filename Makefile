@@ -85,4 +85,4 @@ health-check/target/x86_64-unknown-linux-musl/release/health-check: $(HEALTH_CHE
 	mv health-check/target/x86_64-unknown-linux-musl/release/health-check.tmp health-check/target/x86_64-unknown-linux-musl/release/health-check
 
 scripts/embassy.js: $(TS_FILES)
-	deno bundle scripts/embassy.ts scripts/embassy.js
+	deno run --allow-read --allow-write --allow-env --allow-net scripts/bundle.ts
