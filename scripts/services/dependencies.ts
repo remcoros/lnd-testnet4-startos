@@ -17,7 +17,7 @@ const matchOldBitcoindConfig = shape({
 })
 
 export const dependencies: T.ExpectedExports.dependencies = {
-  bitcoind: {
+  'bitcoind-testnet': {
     // deno-lint-ignore require-await
     async check(_effects, configInput) {
       if (matchOldBitcoindConfig.test(configInput) && configInput.advanced.pruning.mode !== "disabled") {

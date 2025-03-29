@@ -24,7 +24,8 @@ color=#{color}
 
 [Bitcoin]
 bitcoin.active=true
-bitcoin.mainnet=true
+bitcoin.mainnet=false
+bitcoin.testnet4=true
 bitcoin.node={bitcoin_node}
 bitcoin.defaultchanconfs={bitcoin_default_chan_confs}
 bitcoin.minhtlc={bitcoin_min_htlc}

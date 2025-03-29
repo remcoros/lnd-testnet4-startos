@@ -1,10 +1,11 @@
-id: lnd
-title: LND
-version: 0.18.5.0
+id: lnd-testnet
+title: LND (testnet4)
+version: 0.19.0.0
 release-notes: |-
-  * Update LND to 0.18.5-beta [Release Notes](https://github.com/lightningnetwork/lnd/releases/tag/v0.18.5-beta)
+  * Initial release of LND (testnet4) for StartOS
+  * Uses LND 0.19.0-beta.rc1 [Release Notes](https://github.com/lightningnetwork/lnd/blob/master/docs/release-notes/release-notes-0.19.0.md)
 license: MIT
-wrapper-repo: "https://github.com/Start9Labs/lnd-startos"
+wrapper-repo: "https://github.com/remcoros/lnd-startos/tree/testnet4"
 upstream-repo: "https://github.com/lightningnetwork/lnd"
 support-site: "https://lightning.engineering/slack.html"
 marketing-site: "https://lightning.engineering/"
@@ -98,7 +99,7 @@ interfaces:
       - tcp
       - http
 dependencies:
-  bitcoind:
+  bitcoind-testnet:
     version: ">=0.21.1.2 <30.0.0"
     requirement:
       type: "opt-out"
@@ -156,138 +157,6 @@ migrations:
       type: script
       args: ["to"]
 actions:
-  import-umbrel-five:
-    name: "Import from Umbrel (0.5)"
-    description: "Imports wallet and channel data from Umbrel 0.5"
-    warning: "Warning!!! After running this action, be sure to NEVER re-start your Umbrel with the same LND seed! You should never run two different lnd nodes with the same seed! This will lead to strange/unpredictable behavior or even loss of funds."
-    allowed-statuses:
-      - stopped
-    implementation:
-      type: docker
-      image: main
-      system: false
-      entrypoint: import-umbrel-5.sh
-      args: []
-      io-format: json
-      mounts:
-        main: /root/.lnd
-    input-spec:
-      umbrel-host:
-        type: string
-        name: Umbrel IP Address
-        description: "The IP Address for your Umbrel. You can find this by running the command `ping umbrel.local` while connected to your LAN."
-        masked: false
-        placeholder: "192.168.1.9"
-        nullable: false
-      umbrel-password:
-        type: string
-        name: Umbrel Password
-        description: "The password you use to log into your Umbrel dashboard or SSH"
-        masked: true
-        placeholder: password
-        nullable: false
-        default: ""
-  import-mynode:
-    name: "Import from MyNode"
-    description: "Imports wallet and channel data from MyNode"
-    warning: "Warning!!! After running this action, be sure to NEVER re-start your MyNode with the same LND seed! You should never run two different lnd nodes with the same seed! This will lead to strange/unpredictable behavior or even loss of funds."
-    allowed-statuses:
-      - stopped
-    implementation:
-      type: docker
-      image: main
-      system: false
-      entrypoint: import-mynode.sh
-      args: []
-      io-format: json
-      mounts:
-        main: /root/.lnd
-    input-spec:
-      mynode-host:
-        type: string
-        name: MyNode IP Address
-        description: "The IP Address for your MyNode. You can find this by running the command `ping mynode.local` while connected to your LAN."
-        masked: false
-        placeholder: "192.168.1.7"
-        nullable: false
-      mynode-password:
-        type: string
-        name: MyNode Password
-        description: "The password you use to log into your MyNode dashboard or SSH"
-        masked: true
-        placeholder: bolt
-        nullable: false
-        default: ""
-  import-raspiblitz:
-    name: "Import from RaspiBlitz"
-    description: "Imports wallet and channel data from RaspiBlitz"
-    warning: "Warning!!! After running this action, be sure to NEVER re-start your Raspiblitz with the same LND seed! You should never run two different lnd nodes with the same seed! This will lead to strange/unpredictable behavior or even loss of funds."
-    allowed-statuses:
-      - stopped
-    implementation:
-      type: docker
-      image: main
-      system: false
-      entrypoint: import-raspiblitz.sh
-      args: []
-      io-format: json
-      mounts:
-        main: /root/.lnd
-    input-spec:
-      raspiblitz-host:
-        type: string
-        name: RaspiBlitz IP Address
-        description: "The IP Address for your RaspiBlitz. To find this IP address, you may need to check the DHCP Leases in your router."
-        masked: false
-        placeholder: "192.168.1.7"
-        nullable: false
-      raspiblitz-password:
-        type: string
-        name: RaspiBlitz SSH Password
-        description: "The password you use to log into your RaspiBlitz via SSH (Password A)"
-        masked: true
-        placeholder: raspiblitz
-        nullable: false
-        default: ""
-      raspiblitz-lncli-password:
-        type: string
-        name: RaspiBlitz lncli Password
-        description: "The password used to unlock LND on RaspiBlitz (Password C)"
-        masked: true
-        placeholder: raspiblitz_lncli
-        nullable: false
-        default: ""
-  import-umbrel:
-    name: "Import from Umbrel (1.0)"
-    description: "Imports wallet and channel data from Umbrel 1.0"
-    warning: "Warning!!! After running this action, be sure to NEVER re-start your Umbrel with the same LND seed! You should never run two different lnd nodes with the same seed! This will lead to strange/unpredictable behavior or even loss of funds."
-    allowed-statuses:
-      - stopped
-    implementation:
-      type: docker
-      image: main
-      system: false
-      entrypoint: import-umbrel.sh
-      args: []
-      io-format: json
-      mounts:
-        main: /root/.lnd
-    input-spec:
-      umbrel-host:
-        type: string
-        name: Umbrel IP Address
-        description: "The IP Address for your Umbrel. You can find this by running the command `ping umbrel.local` while connected to your LAN."
-        masked: false
-        placeholder: "192.168.1.9"
-        nullable: false
-      umbrel-password:
-        type: string
-        name: Umbrel Password
-        description: "The password you use to log into your Umbrel dashboard or SSH"
-        masked: true
-        placeholder: password
-        nullable: false
-        default: ""
   reset-txs:
     name: "Reset Wallet Transactions"
     description: "Resets the best synced height of the wallet back to its birthday, or genesis if the birthday isn't known. This is useful for picking up on-chain transactions that may have been missed by LND."

@@ -355,9 +355,9 @@ fn main() -> Result<(), anyhow::Error> {
         BitcoinCoreConfig::Internal { user, password } => (
             user,
             password,
-            "bitcoind.embassy",
-            8332,
-            "bitcoind.embassy",
+            "bitcoind-testnet.embassy",
+            48332,
+            "bitcoind-testnet.embassy",
             28332,
             28333,
         ),
@@ -506,7 +506,7 @@ fn main() -> Result<(), anyhow::Error> {
     println!("checking if we need to restore from channel backup...");
     let use_channel_backup_data = if is_restore(Path::new("/root/.lnd")) {
         println!("Detected Embassy Restore. Conducting precautionary channel backup restoration.");
-        let channel_backup_path = Path::new("/root/.lnd/data/chain/bitcoin/mainnet/channel.backup");
+        let channel_backup_path = Path::new("/root/.lnd/data/chain/bitcoin/testnet4/channel.backup");
         if channel_backup_path.exists() {
             let bs = std::fs::read(channel_backup_path)?;
             // backup all except graph db
@@ -544,7 +544,7 @@ fn main() -> Result<(), anyhow::Error> {
                         .arg("POST")
                         .arg("--cacert")
                         .arg("/root/.lnd/tls.cert")
-                        .arg("https://lnd.embassy:8080/v1/changepassword")
+                        .arg("https://lnd-testnet.embassy:8080/v1/changepassword")
                         .arg("-d")
                         .arg(serde_json::to_string(&SkipNulls(serde_json::json!({
                             "current_password": base64::encode(&password_bytes),
@@ -607,7 +607,7 @@ fn main() -> Result<(), anyhow::Error> {
                         .arg("POST")
                         .arg("--cacert")
                         .arg("/root/.lnd/tls.cert")
-                        .arg("https://lnd.embassy:8080/v1/unlockwallet")
+                        .arg("https://lnd-testnet.embassy:8080/v1/unlockwallet")
                         .arg("-d")
                         .arg(serde_json::to_string(&SkipNulls(serde_json::json!({
                             "wallet_password": base64::encode(&password_bytes),
@@ -666,10 +666,10 @@ fn main() -> Result<(), anyhow::Error> {
                 Some(_backups) => loop {
                     std::thread::sleep(Duration::from_secs(5));
                     let output = Command::new("lncli")
-                        .arg("--rpcserver=lnd.embassy")
+                        .arg("--rpcserver=lnd-testnet.embassy")
                         .arg("restorechanbackup")
                         .arg("--multi_file")
-                        .arg("/root/.lnd/data/chain/bitcoin/mainnet/channel.backup")
+                        .arg("/root/.lnd/data/chain/bitcoin/testnet4/channel.backup")
                         .output();
                     match output {
                         Ok(output) if output.status.success() => {
@@ -711,7 +711,7 @@ fn main() -> Result<(), anyhow::Error> {
                 .arg("GET")
                 .arg("--cacert")
                 .arg("/root/.lnd/tls.cert")
-                .arg("https://lnd.embassy:8080/v1/genseed")
+                .arg("https://lnd-testnet.embassy:8080/v1/genseed")
                 .arg("-d")
                 .arg(format!("{}", serde_json::json!({})))
                 .output()?;
@@ -738,7 +738,7 @@ fn main() -> Result<(), anyhow::Error> {
                     .arg("POST")
                     .arg("--cacert")
                     .arg("/root/.lnd/tls.cert")
-                    .arg("https://lnd.embassy:8080/v1/initwallet")
+                    .arg("https://lnd-testnet.embassy:8080/v1/initwallet")
                     .arg("-d")
                     .arg(format!(
                         "{}",
@@ -762,10 +762,10 @@ fn main() -> Result<(), anyhow::Error> {
     }
 
     println!("copying macaroon to public dir...");
-    while !Path::new("/root/.lnd/data/chain/bitcoin/mainnet/admin.macaroon").exists() {
+    while !Path::new("/root/.lnd/data/chain/bitcoin/testnet4/admin.macaroon").exists() {
         std::thread::sleep(std::time::Duration::from_secs(1));
     }
-    for macaroon in std::fs::read_dir("/root/.lnd/data/chain/bitcoin/mainnet")? {
+    for macaroon in std::fs::read_dir("/root/.lnd/data/chain/bitcoin/testnet4")? {
         let macaroon = macaroon?;
         if macaroon.path().extension().and_then(|s| s.to_str()) == Some("macaroon") {
             std::fs::copy(
@@ -786,7 +786,7 @@ fn main() -> Result<(), anyhow::Error> {
         }
         true => loop {
             let output = Command::new("lncli")
-                .arg("--rpcserver=lnd.embassy")
+                .arg("--rpcserver=lnd-testnet.embassy")
                 .arg("tower")
                 .arg("info")
                 .output();
@@ -814,7 +814,7 @@ fn main() -> Result<(), anyhow::Error> {
                     std::thread::sleep(Duration::from_secs(10));
                 }
                 Err(_) => {
-                    println!("Error running the command: lncli --rpcserver=lnd.embassy tower info");
+                    println!("Error running the command: lncli --rpcserver=lnd-testnet.embassy tower info");
                     std::thread::sleep(Duration::from_secs(10));
                 }
             }
@@ -836,7 +836,7 @@ fn main() -> Result<(), anyhow::Error> {
                             &parsed_watchtower_uri.pubkey, &parsed_watchtower_uri.address
                         );
                         let output = Command::new("lncli")
-                            .arg("--rpcserver=lnd.embassy")
+                            .arg("--rpcserver=lnd-testnet.embassy")
                             .arg("wtclient")
                             .arg("add")
                             .arg(&watchtower_uri)
@@ -856,7 +856,7 @@ fn main() -> Result<(), anyhow::Error> {
                                 std::thread::sleep(Duration::from_secs(10));
                             }
                             Err(_) => {
-                                println!("Error running the command: lncli --rpcserver=lnd.embassy wtclient add {}.", &watchtower_uri);
+                                println!("Error running the command: lncli --rpcserver=lnd-testnet.embassy wtclient add {}.", &watchtower_uri);
                                 std::thread::sleep(Duration::from_secs(10));
                             }
                         }

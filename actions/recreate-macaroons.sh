@@ -2,7 +2,7 @@
 
 set -e
 
-rm -f /root/.lnd/data/chain/bitcoin/mainnet/*.macaroon >/dev/null
+rm -f /root/.lnd/data/chain/bitcoin/testnet4/*.macaroon >/dev/null
 rm -f /root/.lnd/public/*.macaroon >/dev/null
 
 action_result_running="    {

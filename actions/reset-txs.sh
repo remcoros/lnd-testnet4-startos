@@ -17,4 +17,4 @@ action_result_stopped="    {
     \"copyable\": false,
     \"qr\": false
 }"
-lncli --rpcserver=lnd.embassy stop >/dev/null 2>/dev/null && echo $action_result_running || echo $action_result_stopped
+lncli --rpcserver=lnd-testnet.embassy stop >/dev/null 2>/dev/null && echo $action_result_running || echo $action_result_stopped

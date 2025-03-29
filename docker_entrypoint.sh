@@ -46,13 +46,13 @@ else
 fi
 lnd_child=$!
 
-while ! [ -e /root/.lnd/data/chain/bitcoin/mainnet/admin.macaroon ]; do
+while ! [ -e /root/.lnd/data/chain/bitcoin/testnet4/admin.macaroon ]; do
   echo "Waiting for lnd to create macaroon..."
   sleep 30
 done
 
-cat /root/.lnd/data/chain/bitcoin/mainnet/admin.macaroon | basenc --base16 -w0  > /root/.lnd/start9/admin.macaroon.hex
-cat /root/.lnd/data/chain/bitcoin/mainnet/admin.macaroon | basenc --base64url -w0  > /root/.lnd/start9/admin.macaroon.base64url
+cat /root/.lnd/data/chain/bitcoin/testnet4/admin.macaroon | basenc --base16 -w0  > /root/.lnd/start9/admin.macaroon.hex
+cat /root/.lnd/data/chain/bitcoin/testnet4/admin.macaroon | basenc --base64url -w0  > /root/.lnd/start9/admin.macaroon.base64url
 
 trap _term SIGTERM
 

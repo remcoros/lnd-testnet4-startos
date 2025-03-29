@@ -35,7 +35,7 @@ pub struct HealthCheckRes {
 }
 
 fn run_health_checks() -> Result<HealthCheckRes, anyhow::Error> {
-    while !Path::new("/root/.lnd/data/chain/bitcoin/mainnet/admin.macaroon").exists() {
+    while !Path::new("/root/.lnd/data/chain/bitcoin/testnet4/admin.macaroon").exists() {
         return Ok(HealthCheckRes {
             code: 60,
             message: None,
@@ -43,7 +43,7 @@ fn run_health_checks() -> Result<HealthCheckRes, anyhow::Error> {
     }
 
     let mac = std::fs::read(Path::new(
-        "/root/.lnd/data/chain/bitcoin/mainnet/admin.macaroon",
+        "/root/.lnd/data/chain/bitcoin/testnet4/admin.macaroon",
     ))?;
 
     let mac_encoded = hex::encode_upper(mac);
@@ -55,7 +55,7 @@ fn run_health_checks() -> Result<HealthCheckRes, anyhow::Error> {
                 .arg(format!("Grpc-Metadata-macaroon: {}", mac_encoded))
                 .arg("--cacert")
                 .arg("/root/.lnd/tls.cert")
-                .arg("https://lnd.embassy:8080/v1/getinfo")
+                .arg("https://lnd-testnet.embassy:8080/v1/getinfo")
                 .output()?
                 .stdout,
         )

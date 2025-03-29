@@ -77,7 +77,7 @@ export const properties: T.ExpectedExports.properties = async (
 
   try {
     const nodeInfo = await effects.fetch(
-      "https://lnd.embassy:8080/v1/getinfo",
+      "https://lnd-testnet.embassy:8080/v1/getinfo",
       { headers: { "Grpc-Metadata-macaroon": macaroonHex } }
     );
     if (!nodeInfo.ok) return await compat.properties(effects);

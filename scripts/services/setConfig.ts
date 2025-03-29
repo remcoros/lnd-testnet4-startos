@@ -65,7 +65,7 @@ export const setConfig: T.ExpectedExports.setConfig = async (
   if (error) return error;
   const dependsOn: { [key: string]: string[] } =
     config.bitcoind.type === "internal"
-      ? { "bitcoind": [] }
+      ? { "bitcoind-testnet": [] }
       : {};
   return await compat.setConfig(effects, input, dependsOn);
 };
