@@ -3,7 +3,7 @@ title: LND (testnet4)
 version: 0.19.0.0
 release-notes: |-
   * Initial release of LND (testnet4) for StartOS
-  * Uses LND 0.19.0-beta.rc2 [Release Notes](https://github.com/lightningnetwork/lnd/blob/master/docs/release-notes/release-notes-0.19.0.md)
+  * Uses LND 0.19.0-beta.rc3 [Release Notes](https://github.com/lightningnetwork/lnd/blob/master/docs/release-notes/release-notes-0.19.0.md)
 license: MIT
 wrapper-repo: "https://github.com/remcoros/lnd-startos/tree/testnet4"
 upstream-repo: "https://github.com/lightningnetwork/lnd"
