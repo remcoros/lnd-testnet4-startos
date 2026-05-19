@@ -302,6 +302,10 @@ const dict = {
 
   'Route outbound through Tor': 256,
   "Route LND's outbound peer connections through the Tor SOCKS proxy. When disabled, LND uses the host's normal network stack. Disable if Tor is unavailable or is interfering with wallet sync (btcwallet's embedded rescanner does not always respect this setting, so sync can stall on Tor-only environments).": 257,
+
+  // Channel Settings — Taproot Overlay (Taproot Assets)
+  'Experimental Taproot Overlay Channels': 258,
+  'Enable support for taproot overlay channels — taproot channels carrying custom Taproot Assets data alongside Bitcoin payments. Used by the Taproot Assets daemon (tapd). Requires Experimental Taproot Channels to also be enabled.': 259,
 } as const
 
 /**

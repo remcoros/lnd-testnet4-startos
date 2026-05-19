@@ -72,6 +72,8 @@ export const shape = z.object({
   'protocol.wumbo-channels': iniBoolean,
   'protocol.option-scid-alias': iniBoolean,
   'protocol.zero-conf': iniBoolean,
+  'protocol.simple-taproot-chans': iniBoolean,
+  'protocol.simple-taproot-overlay-chans': iniBoolean,
   maxpendingchannels: iniNumber,
   'allow-circular-route': iniBoolean,
   rejectpush: iniBoolean,
@@ -284,6 +286,22 @@ export const fullConfigSpec = InputSpec.of({
     default: null,
     description: i18n(
       'Enable support for zero-confirmation channels. Requires option-scid-alias to also be enabled. Zero-conf channels can be used immediately without waiting for on-chain confirmations. Required for Lightning Loop and Pool integration',
+    ),
+    footnote: `${i18n('Default')}: false`,
+  }),
+  'simple-taproot-chans': Value.triState({
+    name: i18n('Experimental Taproot Channels'),
+    default: null,
+    description: i18n(
+      'Taproot Channels improve both privacy and cost efficiency of on-chain transactions. Note: Taproot Channels are experimental and only available for unannounced (private) channels at this time.',
+    ),
+    footnote: `${i18n('Default')}: false`,
+  }),
+  'simple-taproot-overlay-chans': Value.triState({
+    name: i18n('Experimental Taproot Overlay Channels'),
+    default: null,
+    description: i18n(
+      'Enable support for taproot overlay channels — taproot channels carrying custom Taproot Assets data alongside Bitcoin payments. Used by the Taproot Assets daemon (tapd). Requires Experimental Taproot Channels to also be enabled.',
     ),
     footnote: `${i18n('Default')}: false`,
   }),
@@ -546,6 +564,8 @@ export function fileToForm(conf: LndConf): PartialFormType {
     'wumbo-channels': conf['protocol.wumbo-channels'],
     'option-scid-alias': conf['protocol.option-scid-alias'],
     'zero-conf': conf['protocol.zero-conf'],
+    'simple-taproot-chans': conf['protocol.simple-taproot-chans'],
+    'simple-taproot-overlay-chans': conf['protocol.simple-taproot-overlay-chans'],
     'max-pending-channels': conf.maxpendingchannels,
     'allow-circular-route': conf['allow-circular-route'],
     'reject-push': conf.rejectpush,
@@ -632,6 +652,12 @@ export function formToFile(
       input['option-scid-alias'] ?? undefined
   if ('zero-conf' in input)
     result['protocol.zero-conf'] = input['zero-conf'] ?? undefined
+  if ('simple-taproot-chans' in input)
+    result['protocol.simple-taproot-chans'] =
+      input['simple-taproot-chans'] ?? undefined
+  if ('simple-taproot-overlay-chans' in input)
+    result['protocol.simple-taproot-overlay-chans'] =
+      input['simple-taproot-overlay-chans'] ?? undefined
   if ('max-pending-channels' in input)
     result.maxpendingchannels = input['max-pending-channels'] ?? undefined
   if ('allow-circular-route' in input)

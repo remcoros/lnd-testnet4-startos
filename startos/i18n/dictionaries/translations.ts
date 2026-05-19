@@ -246,6 +246,8 @@ export default {
     255: 'El tamaño mínimo de canal en satoshis que tu nodo aceptará. Auméntalo para rechazar canales pequeños y no rentables.',
     256: 'Enrutar tráfico saliente a través de Tor',
     257: 'Enruta las conexiones salientes de LND con sus pares a través del proxy SOCKS de Tor. Cuando se desactiva, LND utiliza la pila de red normal del host. Desactívalo si Tor no está disponible o está interfiriendo con la sincronización de la cartera (el reescáner integrado de btcwallet no siempre respeta esta configuración, por lo que la sincronización puede detenerse en entornos solo Tor).',
+    258: 'Canales Taproot Overlay Experimentales',
+    259: 'Habilita los canales Taproot Overlay — canales Taproot que transportan datos personalizados de Taproot Assets junto con los pagos en Bitcoin. Lo utiliza el daemon Taproot Assets (tapd). Requiere que los Canales Taproot Experimentales también estén habilitados.',
   },
   de_DE: {
     0: 'Starte LND!',
@@ -492,6 +494,8 @@ export default {
     255: 'Die kleinste Kanalgröße in Satoshis, die dein Knoten akzeptiert. Erhöhe diesen Wert, um winzige, unwirtschaftliche Kanäle abzulehnen.',
     256: 'Ausgehenden Verkehr über Tor leiten',
     257: 'Leitet die ausgehenden Peer-Verbindungen von LND über den Tor-SOCKS-Proxy. Wenn deaktiviert, verwendet LND den normalen Netzwerk-Stack des Hosts. Deaktivieren, wenn Tor nicht verfügbar ist oder die Wallet-Synchronisation stört (der eingebettete Rescanner von btcwallet respektiert diese Einstellung nicht immer, sodass die Synchronisation in reinen Tor-Umgebungen ins Stocken geraten kann).',
+    258: 'Experimentelle Taproot-Overlay-Kanäle',
+    259: 'Unterstützung für Taproot-Overlay-Kanäle aktivieren — Taproot-Kanäle, die benutzerdefinierte Taproot-Assets-Daten zusammen mit Bitcoin-Zahlungen transportieren. Wird vom Taproot-Assets-Daemon (tapd) verwendet. Erfordert, dass auch Experimentelle Taproot-Kanäle aktiviert sind.',
   },
   pl_PL: {
     0: 'Uruchamianie LND!',
@@ -738,6 +742,8 @@ export default {
     255: 'Najmniejszy rozmiar kanału w satoshi, jaki zaakceptuje Twój węzeł. Zwiększ tę wartość, aby odrzucać małe, nieopłacalne kanały.',
     256: 'Kieruj ruch wychodzący przez Tor',
     257: 'Kieruje wychodzące połączenia LND z innymi węzłami przez proxy SOCKS Tora. Po wyłączeniu LND używa normalnego stosu sieciowego hosta. Wyłącz, jeśli Tor jest niedostępny lub zakłóca synchronizację portfela (wbudowany rescanner btcwallet nie zawsze respektuje to ustawienie, więc synchronizacja może utknąć w środowiskach z samym Torem).',
+    258: 'Eksperymentalne Kanały Nakładkowe Taproot',
+    259: 'Włącz obsługę kanałów nakładkowych Taproot — kanałów Taproot przenoszących niestandardowe dane Taproot Assets razem z płatnościami Bitcoin. Używane przez demona Taproot Assets (tapd). Wymaga również włączenia Eksperymentalnych Kanałów Taproot.',
   },
   fr_FR: {
     0: 'Démarrage de LND !',
@@ -984,5 +990,7 @@ export default {
     255: 'La plus petite taille de canal en satoshis que votre nœud acceptera. Augmentez cette valeur pour rejeter les petits canaux non rentables.',
     256: 'Acheminer le trafic sortant via Tor',
     257: "Achemine les connexions sortantes de LND avec ses pairs via le proxy SOCKS de Tor. Lorsque désactivé, LND utilise la pile réseau normale de l'hôte. Désactivez si Tor n'est pas disponible ou interfère avec la synchronisation du portefeuille (le rescanner intégré de btcwallet ne respecte pas toujours ce paramètre, la synchronisation peut donc se bloquer dans des environnements uniquement Tor).",
+    258: 'Canaux Taproot en Surcouche Expérimentaux',
+    259: "Activer la prise en charge des canaux Taproot en surcouche — des canaux Taproot transportant des données Taproot Assets personnalisées en plus des paiements Bitcoin. Utilisé par le démon Taproot Assets (tapd). Nécessite également l'activation des Canaux Taproot Expérimentaux.",
   },
 } satisfies Record<string, LangDict>

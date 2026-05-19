@@ -78,7 +78,7 @@ LND is configured entirely through **StartOS actions** (see [Actions](#actions-s
 | Bitcoin backend selection     | `bitcoind` or `neutrino`                                               |
 | General settings              | Alias, color, keysend, AMP, Tor outbound toggle, tor-only mode        |
 | Routing fees                  | Base fee, fee rate, timelock delta                                     |
-| Channel settings              | Min/max size, wumbo, zero-conf, SCID alias, pending, circular route, closes |
+| Channel settings              | Min/max size, wumbo, zero-conf, SCID alias, taproot/overlay, pending, circular route, closes |
 | Autopilot                     | Enable/disable, max channels, allocation, channel size limits          |
 | Performance                   | DB auto-compact, invoice cleanup, reconnect stagger, graph pruning     |
 | Watchtower server             | Enable/disable, listen address                                         |
@@ -180,7 +180,7 @@ This means LND can advertise via domain names (not just raw IPs) when the node h
 - **Purpose:** Configure channel acceptance policies including size limits, pending channel limits, and close behavior
 - **Visibility:** Enabled
 - **Availability:** Any status
-- **Inputs:** Default channel confirmations, min/max channel size, wumbo channels (tri-state), option-scid-alias (tri-state), zero-conf (tri-state), max pending channels, allow circular route (tri-state), reject push (tri-state), coop close target (blocks)
+- **Inputs:** Default channel confirmations, min/max channel size, wumbo channels (tri-state), option-scid-alias (tri-state), zero-conf (tri-state), simple-taproot-chans (tri-state), simple-taproot-overlay-chans (tri-state), max pending channels, allow circular route (tri-state), reject push (tri-state), coop close target (blocks)
 - **Outputs:** None
 
 ### Autopilot Settings

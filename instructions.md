@@ -37,7 +37,7 @@ LND is configured through actions rather than by editing `lnd.conf` directly. Ev
 
 - **General Settings** — node alias, color, accept keysend, accept AMP, and Tor controls. **Route outbound through Tor** (on by default) sends LND's outbound peer connections through the Tor SOCKS proxy; turn it off for clearnet-first outbound or if Tor is interfering with wallet sync. **Use Tor for all traffic** further forces Tor for clearnet-reachable peers and only applies when outbound Tor is on. Inbound peers always reach this node via the StartOS-managed Tor hidden service.
 - **Routing Fees** — base fee, fee rate, and CLTV delta for forwarded payments.
-- **Channel Settings** — default confirmations, min/max channel size, wumbo, zero-conf, SCID alias, pending-channel limit, circular routes, reject-push, and cooperative-close target.
+- **Channel Settings** — default confirmations, min/max channel size, wumbo, zero-conf, SCID alias, experimental taproot channels (and taproot overlay channels for Taproot Assets), pending-channel limit, circular routes, reject-push, and cooperative-close target.
 - **Autopilot Settings** — enable automatic channel management and set max channels, allocation, channel size, privacy, and confirmation targets.
 - **Performance** — database auto-compact, invoice GC, reconnect stagger, gossip and graph-pruning settings.
 - **Watchtower Server** — enable the watchtower server and select which of this node's watchtower addresses to advertise. With it enabled, the **Watchtower Server Info** action becomes available.

@@ -11,46 +11,29 @@ type OldConfig = {
       | { enabled: 'disabled' }
       | { enabled: 'enabled'; 'add-watchtowers': string[] }
   }
+  advanced?: {
+    'protocol-simple-taproot-chans'?: boolean
+  }
 }
 
-export const v_0_20_1_beta_7 = VersionInfo.of({
-  version: '0.20.1-beta:7',
+export const v_0_20_1_beta_8 = VersionInfo.of({
+  version: '0.20.1-beta:8',
   releaseNotes: {
-    en_US: `**Fixes**
+    en_US: `**Features**
 
-- Watchtower interface now advertises clearnet addresses, not only Tor onions.
+- Expose Experimental Taproot Channels (and Taproot Overlay Channels) in Channel Settings. The 0.3.5.x → 0.4.x migration now carries over a prior Experimental Taproot Channels setting.`,
+    es_ES: `**Funcionalidades**
 
-**Internal**
+- Se exponen los Canales Taproot Experimentales (y Canales Overlay Taproot) en Configuración de Canales. La migración 0.3.5.x → 0.4.x ahora conserva el ajuste previo de Canales Taproot Experimentales.`,
+    de_DE: `**Funktionen**
 
-- start-sdk → 1.5.2`,
-    es_ES: `**Correcciones**
+- Experimentelle Taproot-Kanäle (und Taproot-Overlay-Kanäle) sind jetzt in den Kanaleinstellungen verfügbar. Die Migration 0.3.5.x → 0.4.x übernimmt eine vorhandene Einstellung für experimentelle Taproot-Kanäle.`,
+    pl_PL: `**Funkcje**
 
-- La interfaz Watchtower ahora anuncia direcciones de red abierta, no solo onions de Tor.
+- Udostępniono Eksperymentalne Kanały Taproot (i Kanały Nakładkowe Taproot) w Ustawieniach Kanałów. Migracja 0.3.5.x → 0.4.x przenosi teraz wcześniejsze ustawienie Eksperymentalnych Kanałów Taproot.`,
+    fr_FR: `**Fonctionnalités**
 
-**Interno**
-
-- start-sdk → 1.5.2`,
-    de_DE: `**Korrekturen**
-
-- Die Watchtower-Schnittstelle bietet jetzt Klarnetz-Adressen an, nicht nur Tor-Onions.
-
-**Intern**
-
-- start-sdk → 1.5.2`,
-    pl_PL: `**Poprawki**
-
-- Interfejs Watchtower udostępnia teraz adresy w sieci jawnej, a nie tylko adresy Tor onion.
-
-**Wewnętrzne**
-
-- start-sdk → 1.5.2`,
-    fr_FR: `**Corrections**
-
-- L'interface Watchtower expose désormais des adresses en clair, pas uniquement des onions Tor.
-
-**Interne**
-
-- start-sdk → 1.5.2`,
+- Les Canaux Taproot Expérimentaux (et les Canaux Taproot en Surcouche) sont désormais accessibles dans les Paramètres de Canaux. La migration 0.3.5.x → 0.4.x conserve désormais un réglage existant de Canaux Taproot Expérimentaux.`,
   },
   migrations: {
     up: async ({ effects }) => {
@@ -99,12 +82,15 @@ export const v_0_20_1_beta_7 = VersionInfo.of({
           recursive: true,
         }).catch(console.error)
 
-        // Enforce backend bundle based on old config
+        // Enforce backend bundle based on old config; carry over any
+        // experimental-taproot-channels setting from the 0.3.5.x GUI.
         await lndConfFile.merge(effects, {
           externalhosts: undefined,
           ...(configYaml.bitcoind.type === 'internal'
             ? bitcoindBundle
             : neutrinoBundle),
+          'protocol.simple-taproot-chans':
+            configYaml.advanced?.['protocol-simple-taproot-chans'] || undefined,
         })
       }
     },
