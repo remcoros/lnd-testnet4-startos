@@ -4,9 +4,10 @@ import { storeJson } from '../fileModels/store.json'
 import { sdk } from '../sdk'
 
 export const seedFiles = sdk.setupOnInit(async (effects, kind) => {
-  await lndConfFile.merge(effects, {})
-
   if (kind === 'install') {
+    await lndConfFile.merge(effects, {
+      'tor.skip-proxy-for-clearnet-targets': true,
+    })
     await storeJson.merge(effects, {
       walletPassword: utils.getDefaultString({
         charset: 'A-Z,2-7',
@@ -14,6 +15,7 @@ export const seedFiles = sdk.setupOnInit(async (effects, kind) => {
       }),
     })
   } else {
+    await lndConfFile.merge(effects, {})
     await storeJson.merge(effects, {})
   }
 })

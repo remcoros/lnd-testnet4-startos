@@ -76,7 +76,8 @@ LND is configured entirely through **StartOS actions** (see [Actions](#actions-s
 | StartOS-Managed (via Actions) | Details                                                                |
 | ----------------------------- | ---------------------------------------------------------------------- |
 | Bitcoin backend selection     | `bitcoind` or `neutrino`                                               |
-| General settings              | Alias, color, keysend, AMP, Tor outbound toggle, tor-only mode        |
+| General settings              | Alias, color, keysend, AMP                                             |
+| Tor settings                  | Enable Tor (outbound proxy), optionally skip the proxy for clearnet peers |
 | Routing fees                  | Base fee, fee rate, timelock delta                                     |
 | Channel settings              | Min/max size, wumbo, zero-conf, SCID alias, taproot/overlay, pending, circular route, closes |
 | Autopilot                     | Enable/disable, max channels, allocation, channel size limits          |
@@ -104,7 +105,8 @@ Only settings that **diverge from upstream LND defaults** are written to `lnd.co
 | Setting                               | Upstream Default   | Our Default             | Reason                                                                                   |
 | ------------------------------------- | ------------------ | ----------------------- | ---------------------------------------------------------------------------------------- |
 | `accept-keysend`                      | Disabled           | Enabled                 | Keysend is widely expected by wallets and apps that interact with LND nodes              |
-| `tor.skip-proxy-for-clearnet-targets` | `false` (tor-only) | `true` (allow clearnet) | Better performance by default; users can opt into tor-only via "Route clearnet peers through Tor too" |
+| `tor.active`                          | `false`            | `true` (enabled)        | Privacy-preserving default; "Enable Tor" defaults on, making Tor a required running dependency |
+| `tor.skip-proxy-for-clearnet-targets` | `false` (tor-only) | `true` (clearnet direct) | New installs only; dials clearnet-reachable peers directly for performance. Turn off "Skip for clearnet peers" for tor-only |
 
 ### Form Defaults and Footnotes
 
@@ -159,10 +161,19 @@ This means LND can advertise via domain names (not just raw IPs) when the node h
 ### General Settings
 
 - **Name:** General Settings
-- **Purpose:** Configure alias, color, keysend, AMP, Tor outbound, tor-only mode
+- **Purpose:** Configure alias, color, keysend, AMP
 - **Visibility:** Enabled
 - **Availability:** Any status
-- **Inputs:** Alias (text, max 32 chars), color (hex), accept-keysend (tri-state, default: true), accept-amp (tri-state, default: null), tor-active (toggle, default: false), use-tor-only (tri-state, default: false)
+- **Inputs:** Alias (text, max 32 chars), color (hex), accept-keysend (tri-state, default: true), accept-amp (tri-state, default: null)
+- **Outputs:** None
+
+### Tor Settings
+
+- **Name:** Tor Settings
+- **Purpose:** Enable/configure outbound Tor routing
+- **Visibility:** Enabled
+- **Availability:** Any status
+- **Inputs:** Enable Tor union (default: enabled); when enabled: skip for clearnet peers (toggle, seeded on for new installs)
 - **Outputs:** None
 
 ### Routing Fees
@@ -282,7 +293,7 @@ When LND first reaches `synced_to_chain && synced_to_graph` after install, a **S
 | Dependency   | Required | Mounted Volume                          | Health Checks Required         | Purpose                                                        |
 | ------------ | -------- | --------------------------------------- | ------------------------------ | -------------------------------------------------------------- |
 | Bitcoin Core | Optional | `main` → `/mnt/bitcoin` (read-only)    | `sync-progress`, `bitcoind`    | Block data, transaction broadcasting via ZMQ + RPC cookie auth |
-| Tor          | Optional | None                                    | `tor`                          | Required (running) when "Route outbound through Tor" is enabled |
+| Tor          | Optional | None                                    | `tor`                          | Required (running) when "Enable Tor" is on (Tor Settings) |
 
 When using Bitcoin Core as backend, LND requires the listed health checks to pass on Bitcoin Core before starting. LND uses cookie authentication via the mounted `.cookie` file.
 
@@ -294,7 +305,7 @@ LND can alternatively use **Neutrino** (built-in light client) with no Bitcoin C
 2. **No `lncli create` or `lncli unlock`** — wallet lifecycle is fully automated by StartOS
 3. **Configuration via actions only** — `lnd.conf` is managed by StartOS; manual edits will be overwritten by action defaults on mismatch
 4. **Bitcoin Core cookie auth only** — `rpcuser`/`rpcpass` are explicitly removed; authentication uses the mounted `.cookie` file
-5. **Asymmetric Tor disable** — the General Settings "Route outbound through Tor" toggle controls only LND's outbound peer dialing. Inbound peer connections still arrive over the StartOS-managed Tor hidden service (the host Tor daemon owns that mapping). Disabling outbound Tor is appropriate for serving as a watchtower server or for clearnet-first deployments, but a general routing node will still receive Tor traffic — symmetric clearnet-only operation is not supported.
+5. **Asymmetric Tor disable** — the Tor Settings "Enable Tor" control governs only LND's outbound peer dialing. Inbound peer connections still arrive over the StartOS-managed Tor hidden service (the host Tor daemon owns that mapping). Disabling outbound Tor is appropriate for serving as a watchtower server or for clearnet-first deployments, but a general routing node will still receive Tor traffic — symmetric clearnet-only operation is not supported.
 6. **Restored nodes should not be reused** — after backup restore, sweep funds and reinstall
 
 ## What Is Unchanged from Upstream

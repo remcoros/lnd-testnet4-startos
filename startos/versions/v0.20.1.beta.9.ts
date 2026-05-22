@@ -19,11 +19,16 @@ type OldConfig = {
 export const v_0_20_1_beta_9 = VersionInfo.of({
   version: '0.20.1-beta:9',
   releaseNotes: {
-    en_US: `- "Route outbound through Tor" is now off by default. When enabled, Tor is a required running dependency.`,
-    es_ES: `- "Enrutar las salidas a través de Tor" ahora está desactivado de forma predeterminada. Cuando se activa, Tor es una dependencia de ejecución requerida.`,
-    de_DE: `- „Ausgehenden Datenverkehr über Tor leiten" ist jetzt standardmäßig deaktiviert. Wenn aktiviert, ist Tor eine erforderliche laufende Abhängigkeit.`,
-    pl_PL: `- „Kieruj ruch wychodzący przez Tor" jest teraz domyślnie wyłączone. Po włączeniu Tor jest wymaganą uruchomioną zależnością.`,
-    fr_FR: `- « Acheminer le trafic sortant via Tor » est désormais désactivé par défaut. Lorsqu'il est activé, Tor est une dépendance d'exécution requise.`,
+    en_US: `- Tor configuration moved to its own **Tor Settings** action. Enable Tor (on by default) with an optional sub-setting to skip the Tor proxy for clearnet-reachable peers (on by default for new installs).
+- Tor is now a required running dependency whenever Tor is enabled.`,
+    es_ES: `- La configuración de Tor se trasladó a su propia acción **Configuración de Tor**. Habilitar Tor (activado de forma predeterminada) con una subopción para omitir el proxy Tor en los pares accesibles por clearnet (activada de forma predeterminada en instalaciones nuevas).
+- Tor ahora es una dependencia de ejecución requerida siempre que Tor esté habilitado.`,
+    de_DE: `- Die Tor-Konfiguration wurde in eine eigene Aktion **Tor-Einstellungen** verschoben. Tor aktivieren (standardmäßig an) mit einer optionalen Unteroption, um den Tor-Proxy für über Clearnet erreichbare Peers zu überspringen (bei Neuinstallationen standardmäßig an).
+- Tor ist jetzt eine erforderliche laufende Abhängigkeit, wenn Tor aktiviert ist.`,
+    pl_PL: `- Konfiguracja Tora została przeniesiona do osobnej akcji **Ustawienia Tor**. Włącz Tor (domyślnie włączone) z opcjonalnym podustawieniem, aby pomijać proxy Tor dla peerów osiągalnych w clearnecie (w nowych instalacjach domyślnie włączone).
+- Tor jest teraz wymaganą uruchomioną zależnością, gdy Tor jest włączony.`,
+    fr_FR: `- La configuration de Tor a été déplacée dans sa propre action **Paramètres Tor**. Activer Tor (activé par défaut) avec un sous-paramètre optionnel pour contourner le proxy Tor pour les pairs accessibles sur clearnet (activé par défaut pour les nouvelles installations).
+- Tor est désormais une dépendance d'exécution requise dès que Tor est activé.`,
   },
   migrations: {
     up: async ({ effects }) => {

@@ -48,7 +48,6 @@ export const shape = z.object({
   'bitcoind.rpcuser': z.undefined().catch(undefined),
   'bitcoind.rpcpass': z.undefined().catch(undefined),
   'bitcoin.active': z.undefined().catch(undefined), // deprecated
-  'tor.active': z.boolean().catch(false),
   'tor.v3': z.undefined().catch(undefined),
 
   // ──── Bitcoind (set by backend config) ────
@@ -105,8 +104,11 @@ export const shape = z.object({
   'autopilot.conftarget': iniNumber,
 
   // ──── Tor ────
+  'tor.active': z.boolean().catch(true),
   'tor.socks': iniString,
-  'tor.skip-proxy-for-clearnet-targets': iniBoolean,
+  'tor.skip-proxy-for-clearnet-targets': iniBoolean.transform(
+    (v) => v ?? false,
+  ),
 
   // ──── Watchtower ────
   'watchtower.active': iniBoolean,
@@ -173,21 +175,27 @@ export const fullConfigSpec = InputSpec.of({
     ),
     footnote: `${i18n('Default')}: false`,
   }),
-  'tor-active': Value.toggle({
-    name: i18n('Route outbound through Tor'),
-    default: false,
+  tor: Value.union({
+    name: i18n('Enable Tor'),
     description: i18n(
       "Route LND's outbound peer connections through the Tor SOCKS proxy. When disabled, LND uses the host's normal network stack. Enabling this makes Tor a required running dependency. Disable if Tor is unavailable or is interfering with wallet sync (btcwallet's embedded rescanner does not always respect this setting, so sync can stall on Tor-only environments).",
     ),
-    footnote: `${i18n('Default')}: false`,
-  }),
-  'use-tor-only': Value.triState({
-    name: i18n('Route clearnet peers through Tor too'),
-    default: false,
-    description: i18n(
-      "Use the tor proxy even for connections that are reachable on clearnet. This will hide your node's public IP address, but will slow down your node's performance. Only takes effect when 'Route outbound through Tor' is enabled.",
-    ),
-    footnote: `${i18n('Default')}: true`,
+    default: 'enabled',
+    variants: Variants.of({
+      disabled: { name: i18n('Disabled'), spec: InputSpec.of({}) },
+      enabled: {
+        name: i18n('Enabled'),
+        spec: InputSpec.of({
+          'skip-clearnet': Value.toggle({
+            name: i18n('Skip for clearnet peers'),
+            default: false,
+            description: i18n(
+              "Dial peers that are reachable on clearnet directly, skipping the Tor proxy. When off, all outbound peer connections — including clearnet-reachable ones — are routed through Tor, hiding your node's public IP address at the cost of performance.",
+            ),
+          }),
+        }),
+      },
+    }),
   }),
   // ── Routing Fees ──
   'base-fee': Value.number({
@@ -549,11 +557,14 @@ export function fileToForm(conf: LndConf): PartialFormType {
     color: conf.color?.replace('#', ''),
     'accept-keysend': conf['accept-keysend'],
     'accept-amp': conf['accept-amp'],
-    'tor-active': conf['tor.active'],
-    'use-tor-only':
-      conf['tor.skip-proxy-for-clearnet-targets'] != null
-        ? !conf['tor.skip-proxy-for-clearnet-targets']
-        : undefined,
+    tor: conf['tor.active']
+      ? {
+          selection: 'enabled' as const,
+          value: {
+            'skip-clearnet': conf['tor.skip-proxy-for-clearnet-targets'],
+          },
+        }
+      : { selection: 'disabled' as const },
     // Routing Fees
     'base-fee': conf['bitcoin.basefee'],
     'fee-rate': conf['bitcoin.feerate'],
@@ -625,11 +636,17 @@ export function formToFile(
     result['accept-amp'] = input['accept-amp'] ?? undefined
 
   // Tor
-  if ('tor-active' in input)
-    result['tor.active'] = input['tor-active'] ?? undefined
-  if ('use-tor-only' in input)
-    result['tor.skip-proxy-for-clearnet-targets'] =
-      input['use-tor-only'] == null ? undefined : !input['use-tor-only']
+  if (input.tor) {
+    if (input.tor.selection === 'disabled') {
+      result['tor.active'] = false
+      result['tor.skip-proxy-for-clearnet-targets'] = undefined
+    } else if (input.tor.selection === 'enabled') {
+      const val = input.tor.value
+      result['tor.active'] = true
+      if (val && 'skip-clearnet' in val)
+        result['tor.skip-proxy-for-clearnet-targets'] = val['skip-clearnet']
+    }
+  }
 
   // Routing Fees
   if ('base-fee' in input)

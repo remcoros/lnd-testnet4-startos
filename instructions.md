@@ -35,7 +35,8 @@ Other Lightning nodes connect to you over the **Peer Interface**. To share your 
 
 LND is configured through actions rather than by editing `lnd.conf` directly. Every action writes to `lnd.conf` and takes effect on the next start (or immediately, where LND supports it).
 
-- **General Settings** — node alias, color, accept keysend, accept AMP, and Tor controls. **Route outbound through Tor** (off by default) sends LND's outbound peer connections through the Tor SOCKS proxy; enabling it makes Tor a required running dependency. Leave it off for clearnet-first outbound or if Tor is interfering with wallet sync. **Route clearnet peers through Tor too** forces Tor even for peers reachable on clearnet, and only applies when outbound Tor is on. Inbound peers always reach this node via the StartOS-managed Tor hidden service.
+- **General Settings** — node alias, color, accept keysend, and accept AMP.
+- **Tor Settings** — **Enable Tor** (on by default) sends LND's outbound peer connections through the Tor SOCKS proxy; while enabled, Tor is a required running dependency. Turn it off for clearnet-first outbound or if Tor is interfering with wallet sync. When enabled, **Skip for clearnet peers** (on by default for new installs) dials clearnet-reachable peers directly for better performance; turn it off to route those peers through Tor as well. Inbound peers always reach this node via the StartOS-managed Tor hidden service regardless of these settings.
 - **Routing Fees** — base fee, fee rate, and CLTV delta for forwarded payments.
 - **Channel Settings** — default confirmations, min/max channel size, wumbo, zero-conf, SCID alias, experimental taproot channels (and taproot overlay channels for Taproot Assets), pending-channel limit, circular routes, reject-push, and cooperative-close target.
 - **Autopilot Settings** — enable automatic channel management and set max channels, allocation, channel size, privacy, and confirmation targets.
