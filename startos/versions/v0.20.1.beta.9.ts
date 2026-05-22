@@ -16,24 +16,14 @@ type OldConfig = {
   }
 }
 
-export const v_0_20_1_beta_8 = VersionInfo.of({
-  version: '0.20.1-beta:8',
+export const v_0_20_1_beta_9 = VersionInfo.of({
+  version: '0.20.1-beta:9',
   releaseNotes: {
-    en_US: `**Features**
-
-- Expose Experimental Taproot Channels (and Taproot Overlay Channels) in Channel Settings. The 0.3.5.x → 0.4.x migration now carries over a prior Experimental Taproot Channels setting.`,
-    es_ES: `**Funcionalidades**
-
-- Se exponen los Canales Taproot Experimentales (y Canales Overlay Taproot) en Configuración de Canales. La migración 0.3.5.x → 0.4.x ahora conserva el ajuste previo de Canales Taproot Experimentales.`,
-    de_DE: `**Funktionen**
-
-- Experimentelle Taproot-Kanäle (und Taproot-Overlay-Kanäle) sind jetzt in den Kanaleinstellungen verfügbar. Die Migration 0.3.5.x → 0.4.x übernimmt eine vorhandene Einstellung für experimentelle Taproot-Kanäle.`,
-    pl_PL: `**Funkcje**
-
-- Udostępniono Eksperymentalne Kanały Taproot (i Kanały Nakładkowe Taproot) w Ustawieniach Kanałów. Migracja 0.3.5.x → 0.4.x przenosi teraz wcześniejsze ustawienie Eksperymentalnych Kanałów Taproot.`,
-    fr_FR: `**Fonctionnalités**
-
-- Les Canaux Taproot Expérimentaux (et les Canaux Taproot en Surcouche) sont désormais accessibles dans les Paramètres de Canaux. La migration 0.3.5.x → 0.4.x conserve désormais un réglage existant de Canaux Taproot Expérimentaux.`,
+    en_US: `- "Route outbound through Tor" is now off by default. When enabled, Tor is a required running dependency.`,
+    es_ES: `- "Enrutar las salidas a través de Tor" ahora está desactivado de forma predeterminada. Cuando se activa, Tor es una dependencia de ejecución requerida.`,
+    de_DE: `- „Ausgehenden Datenverkehr über Tor leiten" ist jetzt standardmäßig deaktiviert. Wenn aktiviert, ist Tor eine erforderliche laufende Abhängigkeit.`,
+    pl_PL: `- „Kieruj ruch wychodzący przez Tor" jest teraz domyślnie wyłączone. Po włączeniu Tor jest wymaganą uruchomioną zależnością.`,
+    fr_FR: `- « Acheminer le trafic sortant via Tor » est désormais désactivé par défaut. Lorsqu'il est activé, Tor est une dépendance d'exécution requise.`,
   },
   migrations: {
     up: async ({ effects }) => {

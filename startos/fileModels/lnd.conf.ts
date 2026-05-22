@@ -48,7 +48,7 @@ export const shape = z.object({
   'bitcoind.rpcuser': z.undefined().catch(undefined),
   'bitcoind.rpcpass': z.undefined().catch(undefined),
   'bitcoin.active': z.undefined().catch(undefined), // deprecated
-  'tor.active': z.boolean().catch(true),
+  'tor.active': z.boolean().catch(false),
   'tor.v3': z.undefined().catch(undefined),
 
   // ──── Bitcoind (set by backend config) ────
@@ -175,13 +175,14 @@ export const fullConfigSpec = InputSpec.of({
   }),
   'tor-active': Value.toggle({
     name: i18n('Route outbound through Tor'),
-    default: true,
+    default: false,
     description: i18n(
-      "Route LND's outbound peer connections through the Tor SOCKS proxy. When disabled, LND uses the host's normal network stack. Disable if Tor is unavailable or is interfering with wallet sync (btcwallet's embedded rescanner does not always respect this setting, so sync can stall on Tor-only environments).",
+      "Route LND's outbound peer connections through the Tor SOCKS proxy. When disabled, LND uses the host's normal network stack. Enabling this makes Tor a required running dependency. Disable if Tor is unavailable or is interfering with wallet sync (btcwallet's embedded rescanner does not always respect this setting, so sync can stall on Tor-only environments).",
     ),
+    footnote: `${i18n('Default')}: false`,
   }),
   'use-tor-only': Value.triState({
-    name: i18n('Use Tor for all traffic'),
+    name: i18n('Route clearnet peers through Tor too'),
     default: false,
     description: i18n(
       "Use the tor proxy even for connections that are reachable on clearnet. This will hide your node's public IP address, but will slow down your node's performance. Only takes effect when 'Route outbound through Tor' is enabled.",
@@ -565,7 +566,8 @@ export function fileToForm(conf: LndConf): PartialFormType {
     'option-scid-alias': conf['protocol.option-scid-alias'],
     'zero-conf': conf['protocol.zero-conf'],
     'simple-taproot-chans': conf['protocol.simple-taproot-chans'],
-    'simple-taproot-overlay-chans': conf['protocol.simple-taproot-overlay-chans'],
+    'simple-taproot-overlay-chans':
+      conf['protocol.simple-taproot-overlay-chans'],
     'max-pending-channels': conf.maxpendingchannels,
     'allow-circular-route': conf['allow-circular-route'],
     'reject-push': conf.rejectpush,

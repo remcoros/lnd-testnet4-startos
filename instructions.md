@@ -7,7 +7,7 @@
 
 ## What you get on StartOS
 
-- A full **LND** Lightning Network node running on Bitcoin mainnet, with Tor enabled by default.
+- A full **LND** Lightning Network node running on Bitcoin mainnet, reachable by inbound peers over a StartOS-managed Tor hidden service.
 - **REST LND Connect** and **gRPC LND Connect** interfaces exporting `lndconnect://` URIs (with embedded macaroon and cert) for plugging LND into wallets and apps.
 - A **Peer Interface** for inbound Lightning connections from other nodes.
 - A **Watchtower** interface for letting other nodes use this node as their watchtower, available once the watchtower server is enabled.
@@ -35,7 +35,7 @@ Other Lightning nodes connect to you over the **Peer Interface**. To share your 
 
 LND is configured through actions rather than by editing `lnd.conf` directly. Every action writes to `lnd.conf` and takes effect on the next start (or immediately, where LND supports it).
 
-- **General Settings** — node alias, color, accept keysend, accept AMP, and Tor controls. **Route outbound through Tor** (on by default) sends LND's outbound peer connections through the Tor SOCKS proxy; turn it off for clearnet-first outbound or if Tor is interfering with wallet sync. **Use Tor for all traffic** further forces Tor for clearnet-reachable peers and only applies when outbound Tor is on. Inbound peers always reach this node via the StartOS-managed Tor hidden service.
+- **General Settings** — node alias, color, accept keysend, accept AMP, and Tor controls. **Route outbound through Tor** (off by default) sends LND's outbound peer connections through the Tor SOCKS proxy; enabling it makes Tor a required running dependency. Leave it off for clearnet-first outbound or if Tor is interfering with wallet sync. **Route clearnet peers through Tor too** forces Tor even for peers reachable on clearnet, and only applies when outbound Tor is on. Inbound peers always reach this node via the StartOS-managed Tor hidden service.
 - **Routing Fees** — base fee, fee rate, and CLTV delta for forwarded payments.
 - **Channel Settings** — default confirmations, min/max channel size, wumbo, zero-conf, SCID alias, experimental taproot channels (and taproot overlay channels for Taproot Assets), pending-channel limit, circular routes, reject-push, and cooperative-close target.
 - **Autopilot Settings** — enable automatic channel management and set max channels, allocation, channel size, privacy, and confirmation targets.
