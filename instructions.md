@@ -58,4 +58,4 @@ If you restore LND from a StartOS backup, LND automatically requests force-close
 ## Limitations
 
 - **Mainnet only.** Testnet, signet, and regtest are not available.
-- **No manual wallet management.** `lncli create` and `lncli unlock` are not used — StartOS handles wallet creation and unlocking. Direct edits to `lnd.conf` are overwritten by the configuration actions.
+- **No manual wallet management.** `lncli create` and `lncli unlock` are not used — StartOS handles wallet creation and unlocking.
